@@ -8,7 +8,7 @@ namespace DesafioFundamentos.Models
     {
         private decimal precoInicial = 0;
         private decimal precoPorHora = 0;
-        private List<string> veiculos = new List<string>();
+        private List<Veiculo> veiculos = new List<Veiculo>();
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
@@ -20,7 +20,11 @@ namespace DesafioFundamentos.Models
         {
             Console.WriteLine("Digite a placa do veículo para estacionar:");
             string placa = Console.ReadLine();
-            veiculos.Add(placa);
+            Console.WriteLine("Digite o modelo do veículo para estacionar:");
+            string modelo = Console.ReadLine();
+
+            Veiculo veiculo = new Veiculo(modelo, placa);
+            veiculos.Add(veiculo);
         }
 
         public void RemoverVeiculo()
@@ -29,14 +33,14 @@ namespace DesafioFundamentos.Models
             string placa = Console.ReadLine();
 
             // Verifica se o veículo existe
-            if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
+            if (veiculos.Any(x => x.placa.ToUpper() == placa.ToUpper()))
             {
                 Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
 
                 int horas = int.Parse(Console.ReadLine());
                 decimal valorTotal = precoInicial + (horas * precoPorHora);
 
-                veiculos.Remove(placa);
+                veiculos.RemoveAll(v => v.placa == placa);
 
                 Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
             }
@@ -54,9 +58,9 @@ namespace DesafioFundamentos.Models
             if (veiculos.Any())
             {
                 Console.WriteLine("Os veículos estacionados são:");
-                foreach (string veiculo in veiculos)
+                foreach (Veiculo veiculo in veiculos)
                 {
-                    Console.WriteLine("Veículo: " + veiculo);
+                    Console.WriteLine(veiculo.ToString());
                 }
             }
             else
